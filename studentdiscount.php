@@ -12,7 +12,7 @@ use CRM_Studentdiscount_ExtensionUtil as E;
 function studentdiscount_civicrm_validateForm($formName, &$fields, &$files, &$form, &$errors) {
   if ($formName == 'CRM_Event_Form_Registration_Register') {
     // IF using a civiDiscount with the word 'student'
-    if (!empty($form->_submitValues['discountcode']) && stripos($form->_submitValues['discountcode'], 'student') >= 0) {
+    if (!empty($form->_submitValues['discountcode']) && stripos($form->_submitValues['discountcode'], 'student') !== null) {
       // Check that there is a primary email AND that it is an .edu
       if (!empty($form->_submitValues['email-Primary'])) {
         if (substr($form->_submitValues['email-Primary'], -4) != '.edu') {
