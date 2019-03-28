@@ -15,7 +15,16 @@ function studentdiscount_civicrm_validateForm($formName, &$fields, &$files, &$fo
     if (!empty($form->_submitValues['discountcode']) && stripos($form->_submitValues['discountcode'], 'student') !== FALSE) {
       // Check that there is a primary email AND that it is an .edu
       if (!empty($form->_submitValues['email-Primary'])) {
-        if (substr($form->_submitValues['email-Primary'], -4) != '.edu') {
+        $edu = FALSE;
+        // for students like bob@princeton.edu
+        if (substr($form->_submitValues['email-Primary'], -4) == '.edu') {
+          $edu = TRUE;
+        }
+        // for international students ex: bob@ireland.edu.ire
+        if (stripos($form->_submitValues['email-Primary'], '.edu.') !== FALSE) {
+          $edu = TRUE;
+        }
+        if ($edu == FALSE) {
           $errors['discountcode'] = ts('The "%1" discount code  is a student discount code, to use this code please enter a ".edu" Email Address', [1 => $form->_submitValues['discountcode']]);
         }
       // If no email address
